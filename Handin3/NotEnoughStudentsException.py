@@ -1,0 +1,2 @@
+class NotEnoughStudentsException(Exception):
+    pass
