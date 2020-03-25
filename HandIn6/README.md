@@ -1,0 +1,1 @@
+Exercise 1/2 er færdig. Havde problemer med multiprocessing, så valgte min egen metode.
