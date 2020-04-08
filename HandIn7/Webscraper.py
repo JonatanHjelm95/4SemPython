@@ -5,6 +5,10 @@ import csv
 import html5lib
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
 
 def getCryptos(URL):
     cryptos = []
@@ -22,16 +26,15 @@ def getCryptos(URL):
         cryptos.append(crypto)
     return cryptos
 
-def test():
+def googleSearch(crypto):
+    query = str(crypto) + ' crypto coin'
     driver = webdriver.Firefox()
-    driver.get("http://www.python.org")
-    assert "Python" in driver.title
-    elem = driver.find_element_by_name("q")
-    elem.clear()
-    elem.send_keys("pycon")
-    elem.send_keys(Keys.RETURN)
-    assert "No results found." not in driver.page_source
-    driver.close()
+    driver.get("https://google.com/")
+    #assert "Coinmarketcap" in driver.title
+    searchbar = driver.find_element_by_name("q")
+    searchbar.send_keys(query)
+    searchbar.send_keys(Keys.RETURN)
+    
 
 # Sort results by 24H % change, high -> low
 def sortByChange(cryptos):
@@ -56,5 +59,11 @@ def getTop10Change(cryptos):
     l = sortByChange(cryptos)
     return l[:10]
 
+
+# Searches top 100 ranked cryptovalutas, sorts by % change
+# picks top 1 and performs a google search with selenium
 if __name__ == '__main__':
-    test()
+    cryptos = getCryptos('https://coinmarketcap.com/')
+    top10 = getTop10Change(cryptos)
+    top1Name = top10[0]['name']
+    googleSearch(top1Name)
